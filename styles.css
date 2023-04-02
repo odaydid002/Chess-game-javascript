@@ -1,0 +1,157 @@
+:root{
+    --sqw:11dvh;
+    --q0: #523905;
+    --q1: #d4c18d;
+    --q2: #4e3602;
+}
+
+@keyframes an {
+    0%{
+        --q0: #523905;
+        --q1: #d4c18d;
+        --q2: #4e3602;
+    }
+    1%{
+        --q0: #523905;
+        --q1: #d4c18d;
+        --q2: #4e3602;
+    }
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    scroll-behavior: smooth;
+    box-sizing: border-box;
+    font-size: 2.5dvh;
+}
+
+body{
+    transition: 0.6s;
+    animation: an 1s linear infinite;
+    overflow-x: hidden;
+    background: linear-gradient(-45deg, var(--q0), var(--q1), var(--q2));
+}
+
+.board-squire,.board-arg,.board-arn{
+    width: var(--sqw);
+    height: var(--sqw);
+}
+
+.center{
+    display: flex;
+    width: 90%;
+    float: right;
+    justify-content: center;
+    margin-top: 1dvh;
+}
+
+#board{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.piece{
+    width: var(--sqw);
+    height: var(--sqw);
+    transition: 0.9s;
+}
+
+.piece.white:hover{
+    filter: drop-shadow(10px 5px 5px rgba(0, 0, 0, 0.575));
+}
+.piece.black:hover{
+    filter: drop-shadow(-10px 5px 5px rgba(0, 0, 0, 0.575));
+}
+
+.piece:hover{
+    transform: scale(1.05);
+    cursor: pointer;
+}
+
+.bs{
+    background-color: rgba(150, 122, 86, 0.507);
+}
+
+.bw{
+    background-color: rgba(236, 217, 176, 0.486);
+}
+
+.board-arg,.board-arn{
+    text-align: center;
+    font-weight: 800;
+    cursor: default;
+}
+
+.board-arg{
+    width: 45px;
+    width: 30px;
+}
+
+.board-arn{
+    height: 30px;
+    width: var(--sqw);
+}
+
+.cantMove{
+    border: 2px solid rgba(255, 0, 0, 0.753);
+}
+
+.canEat{
+    border: 2px solid rgba(216, 158, 0, 0.753);
+}
+
+.canMove{
+    transition: 0.6s;
+    border: 2px solid rgba(0, 255, 98, 0.74);
+}
+
+.check{
+    transition: 0.6s;
+    border: 2px solid rgba(6, 33, 189, 0.74);
+}
+
+.out-pieces{
+    width: 5%;
+    height: 100dvh;
+    float: right;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background: #523a0580;
+}
+
+#outWhite{
+    border-left: 3px solid #2c1f02;
+}
+#outBlack{
+    border-right: 3px solid #2c1f02;
+}
+
+.turn{
+    transition: 0.7s;
+    position: absolute;
+    top: 0;
+    border: 1px solid rgba(32, 18, 0, 0.603);
+    border-radius: 15px;
+    padding: 0.1dvh 3dvw;
+    background-color: rgba(236, 217, 176, 0.5);
+    font-weight: 400;
+    color: #221700;
+}
+
+.outB,.outW{
+    width: 10dvh;
+    height: 10dvh;
+}
+
+.timer{
+    transition: 0.6s;
+    width: 5dvw;
+    height: 100dvh;
+    z-index: -1;
+    position:absolute;
+    background-color: #291c007a;
+}

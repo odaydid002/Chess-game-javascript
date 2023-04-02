@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Chess</title>
+</head>
+<body>
+    <div class="main">
+        <div class="out-pieces" id="outWhite">
+            <div class="timer" id="whiteTime"></div>
+        </div>
+        <div class="center">
+            <div id="pTurnd" class="turn"><h5 id="pTurn">White 0:0</h5></div>
+            <div id="board">
+                <DIV class="board-row">
+                    <div class="board-arg"></div>
+                    <div class="board-arg">A</div>
+                    <div class="board-arg">B</div>
+                    <div class="board-arg">C</div>
+                    <div class="board-arg">D</div>
+                    <div class="board-arg">E</div>
+                    <div class="board-arg">F</div>
+                    <div class="board-arg">G</div>
+                    <div class="board-arg">H</div>
+                </DIV>
+                <!--------------------------------------------------------------------->
+                <div class="board-row">
+                    <div class="board-arn">8</div>
+                    <div class="board-col">
+                        <div class="board-squire bw" id="a8"><img src="assets/castle-b.png" id="castle1b" class="piece black" alt="castle"></div>
+                    </div>
+                    <div class="board-col">
+                        <div class="board-squire bs" id="b8"><img src="Assets/horse-b.png" id="horse1b" class="piece black" alt="horse"></div>
+                    </div>
+                    <div class="board-col">
+                        <div class="board-squire bw" id="c8"><img src="Assets/elephant-b.png" id="elephant1b" class="piece black" alt="elephant"></div>
+                    </div>
+                    <div class="board-col">
+                        <div class="board-squire bs" id="d8"><img src="Assets/king-b.png" id="king1b" class="piece black" alt="king"></div>
+                    </div>
+                    <div class="board-col">
+                        <div class="board-squire bw" id="e8"><img src="Assets/qween-b.png" id="qween1b" class="piece black" alt="qween"></div>
+                    </div>
+                    <div class="board-col">
+                        <div class="board-squire bs" id="f8"><img src="Assets/elephant-b.png" id="elephant2b" class="piece black" alt="elephant"></div>
+                    </div>
+                    <div class="board-col">
+                        <div class="board-squire bw" id="g8"><img src="Assets/horse-b.png" id="horse2b" class="piece black" alt="horse"></div>
+                    </div>
+                    <div class="board-col">
+                        <div class="board-squire bs" id="h8"><img src="assets/castle-b.png" id="castle2b" class="piece black" alt="castle"></div>
+                    </div>
+                    <div class="board-arn">8</div>
+                </div>
+                <!--------------------------------------------------------------------->
+                <div class="board-row">
+                    <div class="board-arn">7</div>
+                    <div class="board-col">
+                        <div class="board-squire bs" id="a7"><img src="Assets/solder-b.png" id="solider1b" class="piece black" alt="soliderl"></div>
+                    </div>
+                    <div class="board-col">
+                        <div class="board-squire bw" id="b7"><img src="Assets/solder-b.png" id="solider2b" class="piece black" alt="soliderl"></div>
+                    </div>
+                    <div class="board-col">
+                        <div class="board-squire bs" id="c7"><img src="Assets/solder-b.png" id="solider3b" class="piece black" alt="soliderl"></div>
+                    </div>
+                    <div class="board-col">
+                        <div class="board-squire bw" id="d7"><img src="Assets/solder-b.png" id="solider4b" class="piece black" alt="soliderl"></div>
+                    </div>
+                    <div class="board-col">
+                        <div class="board-squire bs" id="e7"><img src="Assets/solder-b.png" id="solider5b" class="piece black" alt="soliderl"></div>
+                    </div>
+                    <div class="board-col">
+                        <div class="board-squire bw" id="f7"><img src="Assets/solder-b.png" id="solider6b" class="piece black" alt="soliderl"></div>
+                    </div>
+                    <div class="board-col">
+                        <div class="board-squire bs" id="g7"><img src="Assets/solder-b.png" id="solider7b" class="piece black" alt="soliderl"></div>
+                    </div>
+                    <div class="board-col">
+                        <div class="board-squire bw" id="h7"><img src="Assets/solder-b.png" id="solider8b" class="piece black" alt="soliderl"></div>
+                    </div>
+                    <div class="board-arn">7</div>
+                </div>
+                <!--------------------------------------------------------------------->
+                <div class="board-row">
+                    <div class="board-arn">6</div>
+                    <div class="board-col">
+                        <div class="board-squire bw" id="a6"></div>
+                    </div>
+                    <div class="board-col">
+                        <div class="board-squire bs" id="b6"></div>
+                    </div>
+                    <div class="board-col">
+                        <div class="board-squire bw" id="c6"></div>
+                    </div>
+                    <div class="board-col">
+                        <div class="board-squire bs" id="d6"></div>
+                    </div>
+                    <div class="board-col">
+                        <div class="board-squire bw" id="e6"></div>
+                    </div>
+                    <div class="board-col">
+                        <div class="board-squire bs" id="f6"></div>
+                    </div>
+                    <div class="board-col">
+                        <div class="board-squire bw" id="g6"></div>
+                    </div>
+                    <div class="board-col">
+                        <div class="board-squire bs" id="h6"></div>
+                    </div>
+                    <div class="board-arn">6</div>
+                </div>
+                <!--------------------------------------------------------------------->
+                <div class="board-row">
+                    <div class="board-arn">5</div>
+                    <div class="board-col">
+                        <div class="board-squire bs" id="a5"></div>
+                    </div>
+                    <div class="board-col">
+                        <div class="board-squire bw" id="b5"></div>
+                    </div>
+                    <div class="board-col">
+                        <div class="board-squire bs" id="c5"></div>
+                    </div>
+                    <div class="board-col">
+                        <div class="board-squire bw" id="d5"></div>
+                    </div>
+                    <div class="board-col">
+                        <div class="board-squire bs" id="e5"></div>
+                    </div>
+                    <div class="board-col">
+                        <div class="board-squire bw" id="f5"></div>
+                    </div>
+                    <div class="board-col">
+                        <div class="board-squire bs" id="g5"></div>
+                    </div>
+                    <div class="board-col">
+                        <div class="board-squire bw" id="h5"></div>
+                    </div>
+                    <div class="board-arn">5</div>
+                </div>
+                <!--------------------------------------------------------------------->
+                <div class="board-row">
+                    <div class="board-arn">4</div>
+                    <div class="board-col">
+                        <div class="board-squire bw" id="a4"></div>
+                    </div>
+                    <div class="board-col">
+                        <div class="board-squire bs" id="b4"></div>
+                    </div>
+                    <div class="board-col">
+                        <div class="board-squire bw" id="c4"></div>
+                    </div>
+                    <div class="board-col">
+                        <div class="board-squire bs" id="d4"></div>
+                    </div>
+                    <div class="board-col">
+                        <div class="board-squire bw" id="e4"></div>
+                    </div>
+                    <div class="board-col">
+                        <div class="board-squire bs" id="f4"></div>
+                    </div>
+                    <div class="board-col">
+                        <div class="board-squire bw" id="g4"></div>
+                    </div>
+                    <div class="board-col">
+                        <div class="board-squire bs" id="h4"></div>
+                    </div>
+                    <div class="board-arn">4</div>
+                </div>
+                <!--------------------------------------------------------------------->
+                <div class="board-row">
+                    <div class="board-arn">3</div>
+                    <div class="board-col">
+                        <div class="board-squire bs" id="a3"></div>
+                    </div>
+                    <div class="board-col">
+                        <div class="board-squire bw" id="b3"></div>
+                    </div>
+                    <div class="board-col">
+                        <div class="board-squire bs" id="c3"></div>
+                    </div>
+                    <div class="board-col">
+                        <div class="board-squire bw" id="d3"></div>
+                    </div>
+                    <div class="board-col">
+                        <div class="board-squire bs" id="e3"></div>
+                    </div>
+                    <div class="board-col">
+                        <div class="board-squire bw" id="f3"></div>
+                    </div>
+                    <div class="board-col">
+                        <div class="board-squire bs" id="g3"></div>
+                    </div>
+                    <div class="board-col">
+                        <div class="board-squire bw" id="h3"></div>
+                    </div>
+                    <div class="board-arn">3</div>
+                </div>
+                <!--------------------------------------------------------------------->
+                <div class="board-row">
+                    <div class="board-arn">2</div>
+                    <div class="board-col">
+                        <div class="board-squire bw" id="a2"><img src="Assets/solder-w.png" id="solider1w" class="piece white" alt="solider"></div>
+                    </div>
+                    <div class="board-col">
+                        <div class="board-squire bs" id="b2"><img src="Assets/solder-w.png" id="solider2w" class="piece white" alt="solider"></div>
+                    </div>
+                    <div class="board-col">
+                        <div class="board-squire bw" id="c2"><img src="Assets/solder-w.png" id="solider3w" class="piece white" alt="solider"></div>
+                    </div>
+                    <div class="board-col">
+                        <div class="board-squire bs" id="d2"><img src="Assets/solder-w.png" id="solider4w" class="piece white" alt="solider"></div>
+                    </div>
+                    <div class="board-col">
+                        <div class="board-squire bw" id="e2"><img src="Assets/solder-w.png" id="solider5w" class="piece white" alt="solider"></div>
+                    </div>
+                    <div class="board-col">
+                        <div class="board-squire bs" id="f2"><img src="Assets/solder-w.png" id="solider6w" class="piece white" alt="solider"></div>
+                    </div>
+                    <div class="board-col">
+                        <div class="board-squire bw" id="g2"><img src="Assets/solder-w.png" id="solider7w" class="piece white" alt="solider"></div>
+                    </div>
+                    <div class="board-col">
+                        <div class="board-squire bs" id="h2"><img src="Assets/solder-w.png" id="solider8w" class="piece white" alt="solider"></div>
+                    </div>
+                    <div class="board-arn">2</div>
+                </div>
+                <!--------------------------------------------------------------------->
+                <div class="board-row">
+                    <div class="board-arn">1</div>
+                    <div class="board-col">
+                        <div class="board-squire bs" id="a1"><img src="assets/castle-w.png" id="castle1w" class="piece white" alt="castle"></div>
+                    </div>
+                    <div class="board-col">
+                        <div class="board-squire bw" id="b1"><img src="Assets/horse-w.png" id="horse1w" class="piece white" alt="horse"></div>
+                    </div>
+                    <div class="board-col">
+                        <div class="board-squire bs" id="c1"><img src="Assets/elephant-w.png" id="elephant1w" class="piece white" alt="elephant"></div>
+                    </div>
+                    <div class="board-col">
+                        <div class="board-squire bw" id="d1"><img src="Assets/king-w.png" id="king1w" class="piece white" alt="king"></div>
+                    </div>
+                    <div class="board-col">
+                        <div class="board-squire bs" id="e1"><img src="Assets/qween-w.png" id="qween1w" class="piece white" alt="qween"></div>
+                    </div>
+                    <div class="board-col">
+                        <div class="board-squire bw" id="f1"><img src="Assets/elephant-w.png" id="elephant2w" class="piece white" alt="elephant"></div>
+                    </div>
+                    <div class="board-col">
+                        <div class="board-squire bs" id="g1"><img src="Assets/horse-w.png" id="horse2w" class="piece white" alt="horse"></div>
+                    </div>
+                    <div class="board-col">
+                        <div class="board-squire bw" id="h1"><img src="assets/castle-w.png" id="castle2w" class="piece white" alt="castle"></div>
+                    </div>
+                    <div class="board-arn">1</div>
+                </div>
+                <DIV class="board-row">
+                    <div class="board-arg"></div>
+                    <div class="board-arg">A</div>
+                    <div class="board-arg">B</div>
+                    <div class="board-arg">C</div>
+                    <div class="board-arg">D</div>
+                    <div class="board-arg">E</div>
+                    <div class="board-arg">F</div>
+                    <div class="board-arg">G</div>
+                    <div class="board-arg">H</div>
+                </DIV>
+                <!--------------------------------------------------------------------->
+
+                <script src="app.js"></script>
+            </div>  
+        </div>
+        <div class="out-pieces" id="outBlack">
+            <div class="timer" id="blackTime"></div>
+        </div>
+    </div>    
+</body>
+</html>
