@@ -1,8 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap');
 :root{
     --sqw:11dvh;
     --q0: #523905;
     --q1: #d4c18d;
     --q2: #4e3602;
+    --Degriss:90deg;
+    --Degris:-90deg;
+    --Degri:0deg;
 }
 
 @keyframes an {
@@ -23,7 +27,9 @@
     padding: 0;
     scroll-behavior: smooth;
     box-sizing: border-box;
-    font-size: 2.5dvh;
+    font-size: 2.3dvh;
+    overflow: hidden;
+    font-family: 'Poppins', sans-serif;
 }
 
 body{
@@ -50,12 +56,16 @@ body{
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-top: 40px;
+    transform: rotate(var(--Degriss));    
+    text-align: center;
 }
 
 .piece{
     width: var(--sqw);
     height: var(--sqw);
     transition: 0.9s;
+    transform: rotate(var(--Degris));
 }
 
 .piece.white:hover{
@@ -68,6 +78,14 @@ body{
 .piece:hover{
     transform: scale(1.05);
     cursor: pointer;
+    background-color: transparent;
+    border: none;
+    transform: rotate(var(--Degris));
+    cursor:grab;
+}
+
+.piece:active{
+    cursor: grabbing;
 }
 
 .bs{
@@ -78,38 +96,26 @@ body{
     background-color: rgba(236, 217, 176, 0.486);
 }
 
-.board-arg,.board-arn{
-    text-align: center;
-    font-weight: 800;
-    cursor: default;
-}
-
-.board-arg{
-    width: 45px;
-    width: 30px;
-}
-
-.board-arn{
-    height: 30px;
-    width: var(--sqw);
-}
-
 .cantMove{
-    border: 2px solid rgba(255, 0, 0, 0.753);
+    border: 2px solid rgba(228, 98, 23, 0.438);
+    background-color: rgba(255, 0, 0, 0.274);
 }
 
 .canEat{
-    border: 2px solid rgba(216, 158, 0, 0.753);
+    border: 2px solid rgba(255, 205, 68, 0.438);
+    background-color: rgba(168, 123, 0, 0.507);
 }
 
 .canMove{
-    transition: 0.6s;
-    border: 2px solid rgba(0, 255, 98, 0.74);
+    transition:0.6s;
+    border: 2px solid rgba(113, 201, 31, 0.548);
+    background-color: rgba(25, 66, 23, 0.363);
 }
 
 .check{
     transition: 0.6s;
-    border: 2px solid rgba(6, 33, 189, 0.74);
+    border: 2px solid rgba(6, 33, 189, 0.5);
+    background: rgba(30, 46, 139, 0.432);
 }
 
 .out-pieces{
@@ -140,11 +146,19 @@ body{
     background-color: rgba(236, 217, 176, 0.5);
     font-weight: 400;
     color: #221700;
+    cursor: pointer;
 }
+
 
 .outB,.outW{
     width: 10dvh;
     height: 10dvh;
+    -webkit-user-drag: none;
+    transform: rotate(var(--Degri));
+}
+
+.outB:hover,.outW:hover{
+    transform: rotate(var(--Degri));
 }
 
 .timer{
@@ -154,4 +168,144 @@ body{
     z-index: -1;
     position:absolute;
     background-color: #291c007a;
+}
+
+.soliderUp{
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    padding: 20px;
+    left: 0;
+    z-index: 999;
+}
+
+.upgrade{
+    cursor:pointer;
+    width: 150px;
+    height: 6dvh;
+    border-radius: 10px;
+    padding:0 20px 0 20px;
+    margin-top: 5px;
+    background-color:#22170091;
+    color: wheat;
+    border: none;
+    transition: 0.6s;
+    font-size:0.7em;
+}
+
+.upgrade:hover{
+    transform: scale(1.1);
+    background-color:#221700;
+}
+
+.main{
+    transition: 0.5s;
+    filter: none;
+}
+
+.arg-t{
+    transform: rotate(var(--Degris));
+}
+.argdv{
+    height: 11dvh;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+}
+
+#castlingdv{
+    z-index: 999;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+}
+
+#turPl{
+    font-size: 1.1em;
+    font-weight: bolder;
+    color: #221700;
+    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.527));
+    cursor: default;
+}
+
+#winner{
+    z-index: 999;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+}
+
+.flex{
+    display: flex;
+    flex-direction: row;
+    padding-bottom: 3dvh;
+}
+
+#winner i{
+    font-size: 1.8em;
+    padding: 0 2dvw 0 2dvw ;
+}
+
+#winnerTitle{
+    font-size: 1.3em;
+}
+
+#statics{
+    width: 50dvw;
+    height: 50dvh;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+.pTitle{
+    text-align: center;
+    font-size: 1em;
+    text-decoration:underline;
+    color: wheat;
+    padding-bottom: 20px;
+}
+
+.p1,.p2{
+    width: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.p1{
+    background-color: #22170079;
+    border-radius: 20px 0 0 20px;
+}
+.p2{
+    background-color: #50401f44;
+    border-radius: 0 20px 20px 0;
+}
+
+.stats{
+    padding: 20px 0 10px 20px;
+    font-size: 0.9em;
+    font-weight: bolder;
+}
+
+.stats span{
+    color: wheat;
+    font-size: 0.9em;
+    font-weight: 100;
 }
