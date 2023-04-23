@@ -4,31 +4,62 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">     
     <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
     <title>Chess</title>
 </head>
 <body>
-    <div class="main">
+    <div class="winner" id="winner">
+        <div class="flex">
+            <i class="fa-solid fa-trophy" style="color: #f9de2f;">
+            </i><h1 class="winnerTitle" id="winnerTitle">Player <span class="winnerTitle" id="winningp">{playerTurn}</span> is the winner</h1> 
+            <i class="fa-solid fa-trophy" style="color: #f9de2f;"></i>
+        </div>
+        <div class="statics" id="statics">
+           <div class="p1">
+            <h1 class="pTitle">Player 1</h1>
+            <p class="stats">Time Spend: <span id="p1times">00:00</span></p>
+            <p class="stats">Time Left: <span id="p1timel">00:00</span></p>
+            <p class="stats">Pieces Eated: <span id="eatedp1">99</span></p>
+            <p class="stats">Pieces Left: <span id="leftp1">99</span></p>
+            <p class="stats">Moves: <span id="movesp1">99</span></p>
+            <p class="stats">King Checks: <span id="checksp1">99</span></p>
+       </div>
+       <div class="p2">
+            <h1 class="pTitle">Player 2</h1>
+            <p class="stats">Time Spend: <span id="p2times">00:00</span></p>
+            <p class="stats">Time Left: <span id="p2timel">00:00</span></p>
+            <p class="stats">Pieces Eated: <span id="eatedp2">99</span></p>
+            <p class="stats">Pieces Left: <span id="leftp2">99</span></p>
+            <p class="stats">Moves: <span id="movesp2">99</span></p>
+            <p class="stats">King Checks: <span id="checksp2">99</span></p>
+        </div>
+        </div>
+        <button class="upgrade" id="restart" onclick="restartGame()">Restart <i style="font-size: 1em;padding: 0;" class="fa-sharp fa-solid fa-rotate-right"></i></button>
+        <button class="upgrade" id="screenshot" onclick="takeScreenshot()">Screenshot <i style="font-size: 1em; padding: 0;" class="fa-solid fa-camera"></i> </button>
+    </div>
+    <div class="soliderUp" id="soliderUp">
+        <button class="upgrade" id="upQween" onclick="upgradeSolider('qween')">Qween <i class="fa-solid fa-chess-queen"></i></button>
+        <button class="upgrade" id="upHorse" onclick="upgradeSolider('horse')">Horse <i class="fa-solid fa-chess-knight"></i></button>
+        <button class="upgrade" id="upCastle" onclick="upgradeSolider('castle')">Castle <i class="fa-solid fa-chess-rook"></i></button>
+        <button class="upgrade" id="upElephant" onclick="upgradeSolider('elephant')">Elephant <i class="fa-solid fa-chess-bishop"></i></button>
+    </div>
+    <div class="castlingdv" id="castlingdv">
+        <h1 id="turPl">Player</h1>
+        <button class="castling upgrade" onclick="startCastling()">Castling <i class="fa-solid fa-chess fa-flip"></i></button>
+        <button class="castling upgrade" onclick='closeCastling()'>Close <i class="fa-sharp fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="main" id="main">
         <div class="out-pieces" id="outWhite">
             <div class="timer" id="whiteTime"></div>
         </div>
         <div class="center">
-            <div id="pTurnd" class="turn"><h5 id="pTurn">White 0:0</h5></div>
+            <div id="pTurnd" class="turn" onclick="rotateTable()"><h5 id="pTurn"><i class="fa-sharp fa-solid fa-clock"></i> 00:00</h5></div>
             <div id="board">
-                <DIV class="board-row">
-                    <div class="board-arg"></div>
-                    <div class="board-arg">A</div>
-                    <div class="board-arg">B</div>
-                    <div class="board-arg">C</div>
-                    <div class="board-arg">D</div>
-                    <div class="board-arg">E</div>
-                    <div class="board-arg">F</div>
-                    <div class="board-arg">G</div>
-                    <div class="board-arg">H</div>
-                </DIV>
                 <!--------------------------------------------------------------------->
                 <div class="board-row">
-                    <div class="board-arn">8</div>
+                    <p class="arg">8</p>
                     <div class="board-col">
                         <div class="board-squire bw" id="a8"><img src="assets/castle-b.png" id="castle1b" class="piece black" alt="castle"></div>
                     </div>
@@ -53,11 +84,10 @@
                     <div class="board-col">
                         <div class="board-squire bs" id="h8"><img src="assets/castle-b.png" id="castle2b" class="piece black" alt="castle"></div>
                     </div>
-                    <div class="board-arn">8</div>
                 </div>
                 <!--------------------------------------------------------------------->
                 <div class="board-row">
-                    <div class="board-arn">7</div>
+                    <p class="arg">7</p>
                     <div class="board-col">
                         <div class="board-squire bs" id="a7"><img src="Assets/solder-b.png" id="solider1b" class="piece black" alt="soliderl"></div>
                     </div>
@@ -82,11 +112,10 @@
                     <div class="board-col">
                         <div class="board-squire bw" id="h7"><img src="Assets/solder-b.png" id="solider8b" class="piece black" alt="soliderl"></div>
                     </div>
-                    <div class="board-arn">7</div>
                 </div>
                 <!--------------------------------------------------------------------->
                 <div class="board-row">
-                    <div class="board-arn">6</div>
+                    <p class="arg">6</p>
                     <div class="board-col">
                         <div class="board-squire bw" id="a6"></div>
                     </div>
@@ -111,11 +140,10 @@
                     <div class="board-col">
                         <div class="board-squire bs" id="h6"></div>
                     </div>
-                    <div class="board-arn">6</div>
                 </div>
                 <!--------------------------------------------------------------------->
                 <div class="board-row">
-                    <div class="board-arn">5</div>
+                    <p class="arg">5</p>
                     <div class="board-col">
                         <div class="board-squire bs" id="a5"></div>
                     </div>
@@ -140,11 +168,10 @@
                     <div class="board-col">
                         <div class="board-squire bw" id="h5"></div>
                     </div>
-                    <div class="board-arn">5</div>
                 </div>
                 <!--------------------------------------------------------------------->
                 <div class="board-row">
-                    <div class="board-arn">4</div>
+                    <p class="arg">4</p>
                     <div class="board-col">
                         <div class="board-squire bw" id="a4"></div>
                     </div>
@@ -169,11 +196,10 @@
                     <div class="board-col">
                         <div class="board-squire bs" id="h4"></div>
                     </div>
-                    <div class="board-arn">4</div>
                 </div>
                 <!--------------------------------------------------------------------->
                 <div class="board-row">
-                    <div class="board-arn">3</div>
+                    <p class="arg">3</p>
                     <div class="board-col">
                         <div class="board-squire bs" id="a3"></div>
                     </div>
@@ -198,11 +224,10 @@
                     <div class="board-col">
                         <div class="board-squire bw" id="h3"></div>
                     </div>
-                    <div class="board-arn">3</div>
                 </div>
                 <!--------------------------------------------------------------------->
                 <div class="board-row">
-                    <div class="board-arn">2</div>
+                    <p class="arg">2</p>
                     <div class="board-col">
                         <div class="board-squire bw" id="a2"><img src="Assets/solder-w.png" id="solider1w" class="piece white" alt="solider"></div>
                     </div>
@@ -227,11 +252,10 @@
                     <div class="board-col">
                         <div class="board-squire bs" id="h2"><img src="Assets/solder-w.png" id="solider8w" class="piece white" alt="solider"></div>
                     </div>
-                    <div class="board-arn">2</div>
                 </div>
                 <!--------------------------------------------------------------------->
                 <div class="board-row">
-                    <div class="board-arn">1</div>
+                    <p class="arg">1</p>
                     <div class="board-col">
                         <div class="board-squire bs" id="a1"><img src="assets/castle-w.png" id="castle1w" class="piece white" alt="castle"></div>
                     </div>
@@ -256,27 +280,43 @@
                     <div class="board-col">
                         <div class="board-squire bw" id="h1"><img src="assets/castle-w.png" id="castle2w" class="piece white" alt="castle"></div>
                     </div>
-                    <div class="board-arn">1</div>
                 </div>
-                <DIV class="board-row">
-                    <div class="board-arg"></div>
-                    <div class="board-arg">A</div>
-                    <div class="board-arg">B</div>
-                    <div class="board-arg">C</div>
-                    <div class="board-arg">D</div>
-                    <div class="board-arg">E</div>
-                    <div class="board-arg">F</div>
-                    <div class="board-arg">G</div>
-                    <div class="board-arg">H</div>
-                </DIV>
+                <div class="board-row margg">
+                    <p class="arg">/</p>
+                    <div class="argdv">
+                        <p class="arg-t">A</p>
+                    </div>               
+                    <div class="argdv">
+                        <p class="arg-t">B</p>
+                    </div>                   
+                    <div class="argdv">
+                        <p class="arg-t">C</p>
+                    </div>                   
+                    <div class="argdv">
+                        <p class="arg-t">D</p>
+                    </div>                   
+                    <div class="argdv">
+                        <p class="arg-t">E</p>
+                    </div>                   
+                    <div class="argdv">
+                        <p class="arg-t">F</p>
+                    </div>                   
+                    <div class="argdv">
+                        <p class="arg-t">G</p>
+                    </div>                   
+                    <div class="argdv">
+                        <p class="arg-t">H</p>
+                    </div>
+                </div>
+                
                 <!--------------------------------------------------------------------->
-
-                <script src="app.js"></script>
-            </div>  
+            </div>
         </div>
         <div class="out-pieces" id="outBlack">
             <div class="timer" id="blackTime"></div>
         </div>
-    </div>    
+    </div>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>
