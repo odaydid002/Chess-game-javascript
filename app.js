@@ -1,15 +1,17 @@
+//-------------------------------------------------------------Variables______Constats--------------------------------------------------------------------------------------//
+soliderUpSoundPause()
+pauseMusicm()
+dragSoundPause()
+drag0SoundPause()
+selectMusicPause()
+upgrdMusicPause()
 const playerPiece = document.querySelectorAll('.piece')
 const squares = document.querySelectorAll('.board-squire')
-
-playerTurn = 1
-
+playerTurn = 1 //who play First
 blackPieces = ['castle1b','horse1b','elephant1b','castle2b','horse2b','elephant2b','king1b','qween1b','solider1b','solider2b','solider3b','solider4b','solider5b','solider6b','solider7b','solider8b']
 whitePieces = ['castle1w','horse1w','elephant1w','castle2w','horse2w','elephant2w','king1w','qween1w','solider1w','solider2w','solider3w','solider4w','solider5w','solider6w','solider7w','solider8w']
-
-blackCastling = true
-whiteCastling = true
-
 start = true
+let variableTime
 let check = []
 let checkK = []
 let pieceMoves = []
@@ -19,20 +21,29 @@ let board = []
 let lands = []
 let tempArray0 = []
 let cls
+
+let nextSquare
+let canDrop
+let fleftmoves = ['a8','b8','c8','d8','e8','f8','g8','h8']
+let frightmoves = ['a1','b1','c1','d1','e1','f1','g1','h1']
+
+//------Drag_Start------//
+let beingDragged
+let beingDraggedE
+let beingDraggedP
+let soldPosB
 let currentPos
 let currentPosB
 let p
 let cnp
 let enp
 let eno
-let nextSquare
-let canDrop
-let fleftmoves = ['a8','b8','c8','d8','e8','f8','g8','h8']
-let frightmoves = ['a1','b1','c1','d1','e1','f1','g1','h1']
-let beingDragged
-let beingDraggedE
-let beingDraggedP
-let soldPosB
+let sold
+let soldPos
+let soldPosW
+let x99 = []
+//----------------------//
+
 let defeated
 let bd = []
 let opp = []
@@ -42,6 +53,8 @@ let ffe
 soliderToUpgrade = []
 let cr
 let op
+
+//------Timer------//
 let whiteTime = 0
 let weTime = 0
 let whiteTimeS = 0
@@ -64,6 +77,9 @@ let p1times = ''
 let p1timel = ''
 let p2times = ''
 let p2timel = ''
+//-----------------//
+
+//-----Scoareboard-----//
 let leftp1 = 16
 let leftp2 = 16
 let eatedp1 = 0
@@ -73,20 +89,61 @@ let movesp2 = 0
 let checksp1 = 0
 let checksp2 = 0
 let winner = 0
+//---------------------//
+
 let gamemoves = ['anything']
+
+//----Castling----//
+let castlingSide
+let castlingp
+blackCastling = true
+whiteCastling = true
+//----------------//
+
+let boardR = 'landscape'
+
+//-----------------Draggable___Element----------------------//
+var draggableElement = document.getElementById('dragable');
+var isDragging = false;
+var dragOffsetX = 0;
+var dragOffsetY = 0;
+//----------------------------------------------------------//
+
+//-----Drag_Drop-----//
+let canPlay = false
+let canEat = false
+let eated = false
+//-------------------//
+
+j=0
+let checked = false
+
+//----------------------------------------------------------------------------------------------------------------------------------------------------//
+
+//-------------------------------------------------------------------Events---------------------------------------------------------------------------//
+
+//----------------------Draggable_Element-------------------------//
+draggableElement.addEventListener('mousedown', function(event) {
+  isDragging = true;
+  dragOffsetX = event.clientX - draggableElement.offsetLeft;
+  dragOffsetY = event.clientY - draggableElement.offsetTop;
+});
+document.addEventListener('mousemove', function(event) {
+  if (isDragging) {
+    var newLeft = event.clientX - dragOffsetX;
+    var newTop = event.clientY - dragOffsetY;
+    draggableElement.style.left = newLeft + 'px';
+    draggableElement.style.top = newTop + 'px';
+  }
+});
+document.addEventListener('mouseup', function(event) {
+  isDragging = false;
+});
+//----------------------------------------------------------------//
 
 squares.forEach(square => {
     moves.push(square.id)
 })
-
-let canPlay = false
-let canEat = false
-let eated = false
-let sold
-let soldPos
-let soldPosW
-j=0
-let checked = false
 
 for (let i=0;i<=64;i++){
     moves2.push(moves[i])
@@ -110,48 +167,56 @@ squares.forEach(square => {
     // square.addEventListener('drag',dragged)
 })
 
-reloadBoard()
+//----------------------------------------------------------------------------------------------------------------------------------------------------//
+
+//------------------------------------------------------------------Functions-------------------------------------------------------------------------//
+reloadBoard() //Reload board to start the game
 
 function dragStart(e){
-    ff2 = []
-    beingDragged = e.target
+    ff2 = []  //Store the player moves that can play
+    beingDragged = e.target //Html element of the selected piece
     bd.push(beingDragged)
     beingDraggedE = e
-    beingDraggedP = searchBoard(e.toElement.parentElement.id,board)
-    p = e.target.alt
-    pieceColor = beingDragged.classList[1]
+    beingDraggedP = searchBoard(e.toElement.parentElement.id,board) //Selected piece Position with coordenates "[0,0],[0,1],...etc"
+    p = e.target.alt //Selected piece type "Solider,King,...etc"
+    pieceColor = beingDragged.classList[1] //Selected piece color black or white"
     currentPos = searchBoard(e.toElement.parentElement.id,board)
     currentPosB = e.toElement.parentElement.id
     sold = beingDragged.alt
-    ff = filterLands(p,currentPos,lands,pieceColor)
-    ffe = canE
+    ff = filterLands(p,currentPos,lands,pieceColor) // Returns Piece Moves
+    ffe = canE // Returns Pieces can Eat
     tempff = []
     let pu
+    //----------------------Add move forward to solider if the first move---------------------//
     if (sold ==="solider" || sold ==="soliderl"){
         soldPos = currentPosB
-        if ((sold ==="solider") && (soldPos[1] === '2') && (Number(soldPos[1]) + 2)<7){
-            pu = searchBoard((String(soldPos[0]) + String(Number(soldPos[1]) + 2)),board)
-            if(lands[pu[0]][pu[1]][1]) ff.push(pu)
+        if ((sold ==="solider") && (soldPos[1] === '2')){
+            pu = [currentPos[0]-2,currentPos[1]]
+            if(lands[pu[0]][pu[1]][1]){
+                if (lands[currentPos[0]-1][currentPos[1]][1]) ff.push(pu)
+            }
         }
-        if ((sold ==="soliderl") && (soldPos[1] === '7') && (Number(soldPos[1]) - 2)>0){
-            pu = searchBoard((String(soldPos[0]) + String(Number(soldPos[1]) - 2)),board)
-            if(lands[pu[0]][pu[1]][1]) ff.push(pu)
+        if ((sold ==="soliderl") && (soldPos[1] === '7')){
+            pu = [currentPos[0]+2,currentPos[1]]
+            if(lands[pu[0]][pu[1]][1]){
+                if (lands[currentPos[0]+1][currentPos[1]][1]) ff.push(pu)
+            }
         }
-    }
-    ff.forEach(f=>{
-        ff2.push(board[f[0]][f[1]])
-    })
-    if (gameCheck()){
-        checked = true
-        let rr = checkMoves()
-        gamemoves = rr
-        let gg = []
-        gg = ff2
-        ff2 = []
-        gg.forEach(x=>{
-            if(inArray(x,rr)) ff2.push(x)
+        }
+        ff.forEach(f=>{
+            ff2.push(board[f[0]][f[1]])
         })
-    }
+    //----------------------------------------------------------------------------------------//
+
+
+    //------------------Check King------------------//
+    if(gameCheck()){
+        checked = true
+    }  
+    //----------------------------------------------//
+
+
+    //---------------All moves can play---------------//
     ff3 = []
     ff4 = []
     if (playerTurn === 1) who = 2                                                                                  
@@ -168,17 +233,31 @@ function dragStart(e){
     ff4.forEach(f=>{
         ff3.push(f)
     })
-
-    if (sold === 'king'){
-        ff2 = ff4
-        if(checked) {
-            if (gamemoves.length!=0) if(gamemoves[0]==='anything') gamemoves = []
-            ff4.forEach(f=>{
-                if (!inArray(f,gamemoves)) gamemoves.push(f)
-            })
+    //-------------------------------------------------//
+    ffe.forEach(p=>{
+        x99.push(document.getElementById(p).children[0].id)
+    })
+    let rr = checkMoves(x99)
+    gamemoves = rr
+    let gg = []
+    gg = ff2
+    ff2 = []
+    gg.forEach(x=>{
+        if(inArray(x,rr)) ff2.push(x)
+    })
+        //---------------------If selected piece is king Filter moves-----------------------//
+        if (sold === 'king'){
+            ff2 = ff4
+            if(checked) {
+                if (gamemoves.length!=0) if(gamemoves[0]==='anything') gamemoves = []
+                ff4.forEach(f=>{
+                    if (!inArray(f,gamemoves)) gamemoves.push(f)
+                })
+            }
         }
-    }
+        //----------------------------------------------------------------------------------//
 
+    //----------------Start count player time--------------------//
     if ((playerTurn === 1)&&(pieceColor === 'white')){
         canPlay = true
         if (start){
@@ -190,9 +269,9 @@ function dragStart(e){
     }else{
         canPlay = false
     }
-
-
-
+    //-----------------------------------------------------------//
+    
+    //------------------Add colors to board squares can play or eat-----------------//
     if(canPlay){
         ff2.forEach(f=>{
             document.getElementById(f).classList.add('canMove')
@@ -201,13 +280,13 @@ function dragStart(e){
             document.getElementById(c).classList.add('canEat')
         })
     }
+    //-----------------------------------------------------------------------------//
+    x99 = []
     filterLands(p,currentPos,lands,pieceColor)
 }
-
 function dragOver(e){
     e.preventDefault()
 }
-
 function dragDrop(e){
     if((((playerTurn === 1)&&(pieceColor === 'white'))||((playerTurn === 2)&&(pieceColor === 'black')))){
         if(inArray(e.target.id,moves)){
@@ -230,13 +309,11 @@ function dragDrop(e){
             if(sold==="king") if (playerTurn === 1) whiteCastling = false
             if(sold==="king") if (playerTurn === 2) blackCastling = false
             turnChange()
+            drag0Sound()
             if (checked){
                 checked = false
-                if (playerTurn===1) checksp1 +=1
-                else checksp2 +=1
-                if (gameOver()){
-                    endGame()
-                }
+                if (playerTurn===1) checksp2 +=1
+                else checksp1 +=1
             }
         }else if((canDrop === true)){
             e.target.append(beingDragged)
@@ -245,20 +322,16 @@ function dragDrop(e){
             if(sold==="king") if (playerTurn === 1) whiteCastling = false
             if(sold==="king") if (playerTurn === 2) blackCastling = false
             turnChange()
+            drag0Sound()
             if (checked){
                 checked = false
-                if (playerTurn===1) checksp1 +=1
-                else checksp2 +=1
-                if (gameOver()){
-                    endGame()
-                }
+                if (playerTurn===1) checksp2 +=1
+                else checksp1 +=1
             }
         }     
         reloadBoard()        
     }
-    console.log(gamemoves)
 }
-
 function dragEnter(e){
     if(canPlay){
         if(inArray(e.target.id,moves)){
@@ -277,18 +350,15 @@ function dragEnter(e){
         document.getElementById(id).classList.remove('check')
     } 
 }
-
 function dragLeave(e){
     if(inArray(e.target.id,moves)){
         e.target.classList.remove('cantMove')
     }else{
         e.toElement.parentElement.classList.remove('cantMove')
    }
-    
     canDrop = false
     canEat = false
 }
-
 function turnChange(){
     const ptrd = document.getElementById('pTurnd')
     const ptrn = document.getElementById('pTurn')
@@ -297,16 +367,23 @@ function turnChange(){
         ptrn.style.color = "#9c885c"
         ptrd.style.backgroundColor = 'rgba(36, 24, 0, 0.616)'
         ptrd.style.borderColor = "#beb07fd5"
+        if(boardR === 'landscape'){
+            document.documentElement.style.setProperty("--Degris","90deg")
+            document.documentElement.style.setProperty("--Degriss","-90deg")
+        }    
     }else if(playerTurn === 2){
         playerTurn--
         ptrn.style.color = '#221700'
         ptrd.style.backgroundColor = 'rgba(236, 217, 176, 0.5)'
         ptrd.style.borderColor = "rgba(32, 18, 0, 0.603)"
+        if(boardR === 'landscape'){
+            document.documentElement.style.setProperty("--Degris","-90deg")
+            document.documentElement.style.setProperty("--Degriss","90deg")
+        }
     }
     if (playerTurn===1) movesp1 +=1
     else movesp2 +=1
 }
-
 function wherePiece(pp){
     let k=0
     board.forEach(m =>{
@@ -318,7 +395,6 @@ function wherePiece(pp){
         k++
     })
 }
-
 function inArray(element,array){
     let res=false
     array.forEach(el=>{
@@ -328,15 +404,6 @@ function inArray(element,array){
     })
     return res
 }
-
-function isFirstPlay(test){
-    if(test != 'board-squire'){
-        return true
-    }else{
-        return false
-    }
-}
-
 function searchBoard(element,array){
     for (let i=0;i<8;i++){
         for (let j=0;j<8;j++){
@@ -346,33 +413,6 @@ function searchBoard(element,array){
         }
     }
 }
-
-function inBoard(element,array){
-    for (let i=0;i<8;i++){
-        for (let j=0;j<8;j++){
-            if(element === array[i][j]){
-                return true
-            }
-        }
-    }
-}
-
-function stateLand(land,lands){
-    let pos = []
-    for(let i=0;i<8;i++){
-        for(let j=0;j<8;j++){
-            if (lands[i][j][0] === land){
-                pos = [i,j]
-            }
-        }
-    }
-    if (pos === []){
-        return [false,false]
-    }else{
-        return [true,pos]
-    }
-}
-
 function filterLands(piece,piecePos,lands,pieceColor){
     let canM = []
     canE = []
@@ -391,6 +431,11 @@ function filterLands(piece,piecePos,lands,pieceColor){
                 if (d2.firstChild.classList[1] != pieceColor) canE.push(board[i-1][j-1])
             }
         }
+        if (i===6){
+            if(lands[i-1][j][1]){
+                if(lands[i-2][j][1]) canM.push([i-2,j])
+            }
+        }
     }else if(piece === 'soliderl'){
         i = piecePos[0]
         j = piecePos[1]
@@ -403,6 +448,11 @@ function filterLands(piece,piecePos,lands,pieceColor){
             }
             if((j-1>=0)&&(d2.firstChild != null)){
                 if (d2.firstChild.classList[1] != pieceColor) canE.push(board[i+1][j-1])
+            }
+        }
+        if (i===1){
+            if(lands[i+1][j][1]){
+                if(lands[i+2][j][1]) canM.push([i+2,j])
             }
         }
     }else if(piece === 'castle'){
@@ -749,9 +799,42 @@ function filterLands(piece,piecePos,lands,pieceColor){
     }
     return canM
 }
-
 function reloadBoard(){
-    eated = false
+    let Ends = false
+    let eatedPiecesB = document.getElementById('outBlack').childNodes
+    let eatedPiecesw = document.getElementById('outWhite').childNodes
+    eatedPiecesB.forEach(aze=>{
+        if ((aze.classList!=null)&&(aze.classList[0]==="piece")){
+            if (aze.id ==='king1b'){
+                winner = 1
+                eatedp1 += 1
+                leftp2 -= 1
+                movesp1 += 1
+                checksp2 -= 1
+                endGame()
+                Ends = true
+            } 
+        }
+    })
+    eatedPiecesw.forEach(aze=>{
+        if ((aze.classList!=null)&&(aze.classList[0]==="piece")){
+            if (aze.id ==='king1w'){
+                winner = 2
+                eatedp2 += 1
+                movesp2 += 1
+                leftp1 -= 1
+                checksp1 -= 1
+                endGame()
+                Ends = true
+                
+            }
+        }
+    })
+    moves.forEach(c=>{
+        document.getElementById(c).classList.remove('canEat','canMove','cantMove','check')
+    })
+    if (!Ends){
+        eated = false
     canDrop = false
     canEat = false
     canPlay = false
@@ -787,8 +870,9 @@ function reloadBoard(){
     leftp2 = 16 - (document.getElementById('outBlack').children.length-1)
     eatedp1 = document.getElementById('outBlack').children.length-1
     eatedp2 = document.getElementById('outWhite').children.length-1
+    }
+    
 }
-
 function eatPiece(e){
     piece1 =  beingDragged
     piece2 = e.target
@@ -810,9 +894,6 @@ function eatPiece(e){
         } 
         eated = true
     }
-
-
-    
     if (eated){
         let outWhite = document.getElementById('outWhite').childNodes.length
         let outBlack = document.getElementById('outBlack').childNodes.length
@@ -840,16 +921,13 @@ function eatPiece(e){
         }
     }
 }
-
 function map_interval (x, in_min, in_max, out_min, out_max) {
     return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
 }
-
 function roundTo(number, digits) {
     var multiplier = Math.pow(10, digits);
     return Math.round(number * multiplier) / multiplier;
-  }
-
+}
 function dragged(){
     const ptrn = document.getElementById('pTurn')
     if ((playerTurn === 1)){
@@ -878,7 +956,6 @@ function dragged(){
         document.getElementById('whiteTime').style.height = String(wTm)+'dvh'
     }
     tW = String(whiteTimeM2+whiteTimeM+':'+whiteTimeS2+whiteTimeS)
-    
     if ((playerTurn === 2)){
         bkTime += 1
         clkW = String('Player2: '+ blackTimeM2+blackTimeM+':'+blackTimeS2+blackTimeS)
@@ -905,8 +982,8 @@ function dragged(){
         document.getElementById('blackTime').style.height = String(bTm)+'dvh'
     }
     tB = String(blackTimeM2+blackTimeM+':'+blackTimeS2+blackTimeS)
-    
     clGe = String('Chess ' + gameTimeM2+gameTimeM+':'+gameTimeS2+gameTimeS)
+    variableTime = String('Time: ' + gameTimeM2+gameTimeM+':'+gameTimeS2+gameTimeS)
     gameTimeS += 1
     document.title = clGe
     if (gameTimeS === 10){
@@ -924,42 +1001,38 @@ function dragged(){
     if (gameTimeM2 === 6){
         gameTimeM2 = 0
     }
-    
     if(p1timel!='00:00'){
         p1times = String(whiteTimeM2+whiteTimeM+':'+whiteTimeS2+whiteTimeS)
         p1timel = String((9-(whiteTimeM2*10+whiteTimeM))+':'+(59-(whiteTimeS2*10+whiteTimeS)))
     } 
-    
     if(p2timel!='00:00'){
         p2times = String(blackTimeM2+blackTimeM+':'+blackTimeS2+blackTimeS)
         p2timel = String((9-(blackTimeM2*10+blackTimeM))+':'+(59-(blackTimeS2*10+blackTimeS)))
     } 
-
     if ((whiteTimeM2===1)||(blackTimeM2===1)){
         if (whiteTimeM2===1) winner = 2
         if (blackTimeM2===1) winner = 1
         endGame()
     }
 }
-
 function opneSelectorUp(){
     if ((sold ==="solider")&&(inArray(nextSquare,fleftmoves))){
+        selectMusic()
         document.getElementById('soliderUp').style.display = 'flex'
         document.getElementById('main').style.filter = 'blur(5px)'
         soliderToUpgrade = ['white',beingDragged]
     }
     else if ((sold ==="soliderl")&&(inArray(nextSquare,frightmoves))){
+        selectMusic()
         document.getElementById('soliderUp').style.display = 'flex'
         document.getElementById('main').style.filter = 'blur(5px)'
         soliderToUpgrade = ['black',beingDragged]
     }
 }
-
 function closeSelectorUp(){
     document.getElementById('soliderUp').style.display = 'none'
     document.getElementById('main').style.filter = 'none'
 }
-
 function upgradeSolider(alt){
     if (soliderToUpgrade[0] ==="white"){
         switch (alt) {
@@ -977,6 +1050,7 @@ function upgradeSolider(alt){
                 break;
         }
         soliderToUpgrade[1].setAttribute('alt',alt)
+        soliderUpSound()
         closeSelectorUp()
         gameCheck()
     }else{
@@ -995,11 +1069,11 @@ function upgradeSolider(alt){
                 break;
         }
         soliderToUpgrade[1].setAttribute('alt',alt)
+        soliderUpSound()
         closeSelectorUp()
         gameCheck()
     }
 }
-
 function opMoves(who){
     let color = 'white'
     let p0
@@ -1032,7 +1106,6 @@ function opMoves(who){
     })
     return play
 }
-
 function opMoves2(who,landss){
     let color = 'white'
     let p0
@@ -1055,7 +1128,6 @@ function opMoves2(who,landss){
     })
     return play
 }
-
 function findKing(){
     let kingCo
     let king0
@@ -1082,7 +1154,6 @@ function findKing(){
         return null
     }
 }
-
 function filterLandsCheck(piece,piecePos,lands,pieceColor){
     let canM = []
     let canEE = []
@@ -1101,6 +1172,11 @@ function filterLandsCheck(piece,piecePos,lands,pieceColor){
                 if (d2.firstChild.classList[1] != pieceColor) canEE.push(board[i-1][j-1])
             }
         }
+        if (i===6){
+            if(lands[i-1][j][1]){
+                if(lands[i-2][j][1]) canM.push([i-2,j])
+            }
+        }
     }if(piece === 'soliderl'){
         i = piecePos[0]
         j = piecePos[1]
@@ -1113,6 +1189,11 @@ function filterLandsCheck(piece,piecePos,lands,pieceColor){
             }
             if((j-1>=0)&&(d2.firstChild != null)){
                 if (d2.firstChild.classList[1] != pieceColor) canEE.push(board[i+1][j-1])
+            }
+        }
+        if (i===1){
+            if(lands[i+1][j][1]){
+                if(lands[i+2][j][1]) canM.push([i+2,j])
             }
         }
     }if(piece === 'castle'){
@@ -1409,7 +1490,6 @@ function filterLandsCheck(piece,piecePos,lands,pieceColor){
     })
     return canM
 }
-
 function gameCheck(){
     let opM = opMoves(playerTurn)
     let kingc = findKing()
@@ -1418,6 +1498,7 @@ function gameCheck(){
             kingc[2].classList.add('check')
             if (playerTurn === 1) whiteCastling = false
             if (playerTurn === 2) blackCastling = false
+            upgradeMusic()
             return true
         }else{
             return false
@@ -1426,7 +1507,6 @@ function gameCheck(){
         return false
     }
 }
-
 function filterKLands(){
     kingc = findKing()
     kingP = kingc[0]
@@ -1444,20 +1524,16 @@ function filterKLands(){
     })
     return pos
 }
-
 function closeCastling(){
     document.getElementById('castlingdv').style.display ='none'
     document.getElementById('main').style.filter = 'none'
 }
 function openCastling(){
+    selectMusic()
     document.getElementById('castlingdv').style.display ='flex'
     document.getElementById('main').style.filter = 'blur(5px)'
     document.getElementById('turPl').innerText = String('Player '+ playerTurn + ' | Castling '+castlingSide)
 }
-
-let castlingSide
-let castlingp
-
 function checkCastling(){
     if (playerTurn === 1){
         let opM = opMoves(1)
@@ -1502,9 +1578,9 @@ function checkCastling(){
         }
     }
 }
-
 function startCastling(){
     closeCastling()
+    dragSound()
     if (playerTurn === 1) whiteCastling = false
     if (playerTurn === 2) blackCastling = false
     if (castlingp === 'white'){
@@ -1535,10 +1611,10 @@ function startCastling(){
             document.getElementById('c8').appendChild(castelel)
         }
     }
+    
     turnChange()
     reloadBoard()
 }
-
 function fakeGame (){
     let landBol = []
     let landBolTemp = []
@@ -1558,10 +1634,10 @@ function fakeGame (){
     }
     return landBol
 }
-
-function checkMoves(){
+function checkMoves(x99){
     // opponent moves | current piece | king position | tempboardLands
     let op = 2
+    let x98 = []
     let tempLands = fakeGame()
     if (playerTurn === 1) op = 2
     if (playerTurn === 2) op = 1
@@ -1576,6 +1652,19 @@ function checkMoves(){
         let pieceType = piece.alt
         let pieceCr = piece.classList[1]
         let pieceLandsC = filterLandsCheck(pieceType,piecePosC,lands,pieceCr)
+        pieceLandsC.forEach(pe=>{
+            sss = board[pe[0]][pe[1]]
+            if (playerTurn === 1){
+                if (sss[1]!="4" && pieceType==="solider") x98.push(sss)
+                if (pieceType != "solider") if (!inArray(sss,x98)) x98.push(sss)
+            }
+            if (playerTurn === 2){
+                if (sss[1]!="5" && pieceType==="soliderl") x98.push(sss)
+                if (pieceType != "soliderl") if (!inArray(sss,x98)) x98.push(sss)
+            }
+        })
+        console.log(x98)
+        x98 = []
         pieceLandsC.forEach(x=>{
             let i = piecePosC
             let j = x
@@ -1603,20 +1692,20 @@ function checkMoves(){
     })
     return finalPlay
 }
-
 function restartGame(){
     location.reload();
 }
-
 function takeScreenshot() {
     document.getElementById('restart').style.display = "none"
     document.getElementById('screenshot').style.display = "none"
     document.getElementById('statics').style.display = "none"
+    document.getElementById('dragable').style.display = "none"
     document.getElementById('winner').style.zIndex = "1"
     document.getElementById('soliderUp').style.zIndex = "0"
     document.getElementById('castlingdv').style.zIndex = "0"
     document.getElementById('main').style.zIndex = "1"
     document.getElementById('main').style.filter = "none"
+    document.getElementById('pTurn').innerText = variableTime
     html2canvas(document.body).then(function(canvas) {
         // Convert canvas to an image
         var image = canvas.toDataURL();
@@ -1633,7 +1722,6 @@ function takeScreenshot() {
     });
     setTimeout(restartGame,5000)
 }
-
 function gameOver(){
     if (gamemoves.length === 0){
         if (playerTurn === 1) winner = 2
@@ -1643,11 +1731,10 @@ function gameOver(){
         return false
     }
 }
-
 function endGame(){
     document.removeEventListener('animationiteration',dragged)
-    if ((winner === 1)&&(p1timel!='00:00'||p2timel!='00:00')) checksp1+= 1
-    if ((winner === 2)&&(p1timel!='00:00'||p2timel!='00:00')) checksp2+= 1
+    if ((winner === 1)&&(p1timel!='00:00'||p2timel!='00:00')) checksp2+= 1
+    if ((winner === 2)&&(p1timel!='00:00'||p2timel!='00:00')) checksp1+= 1
     document.getElementById('main').style.filter = 'blur(5px)'
     document.getElementById('winner').style.display = 'flex'
     document.getElementById('winningp').innerText = winner
@@ -1663,10 +1750,13 @@ function endGame(){
     document.getElementById('leftp2').innerText = String(leftp2)
     document.getElementById('movesp2').innerText = String(movesp2)
     document.getElementById('checksp2').innerText = String(checksp2)
+    document.getElementById("musics").pause()
+    document.getElementById('musicsmate').play()
+    document.getElementById('musicsdrag').pause()
+    document.getElementById('musicsupgrade').pause()
+    document.getElementById('musicselect').pause()
+    setTimeout(pauseMusicm,8000)
 }
-
-let boardR = 'landscape'
-
 function rotateTable(){
     if (boardR === 'landscape'){
         boardR = 'portrait'
@@ -1678,3 +1768,68 @@ function rotateTable(){
         document.documentElement.style.setProperty("--Degriss","90deg")
     }
 }
+function pauseResume() {
+    var audio = document.getElementById("musics");
+    if (audio.paused) {
+      audio.play();
+      document.getElementById('musicControl').childNodes[1].classList.remove("fa-volume-mute")
+      document.getElementById('musicControl').childNodes[1].classList.add("fa-volume-high")
+    } else {
+      audio.pause();
+      document.getElementById('musicControl').childNodes[1].classList.remove("fa-volume-high")
+      document.getElementById('musicControl').childNodes[1].classList.add("fa-volume-mute")
+    }
+}
+function pauseMusicm(){
+    document.getElementById('musicsmate').pause()
+}
+function dragSound(){
+    audio = document.getElementById('musicsdrag')
+    audio.currentTime = 0;
+    audio.play()
+    setTimeout(function() {
+        audio.pause();
+      }, 1000);
+}
+function dragSoundPause(){
+    document.getElementById('musicsdrag').pause()
+}
+function drag0Sound(){
+    audio = document.getElementById('musicsdrag0')
+    audio.currentTime = 0
+    audio.play()
+    setTimeout(drag0SoundPause,150);
+}
+function drag0SoundPause(){
+    document.getElementById('musicsdrag0').currentTime = 0
+    document.getElementById('musicsdrag0').pause()
+}
+function selectMusic(){
+    document.getElementById('musicselect').play()
+    setTimeout(selectMusicPause,500)
+}
+function selectMusicPause(){
+    audio = document.getElementById('musicselect')
+    audio.pause()
+    audio.currentTime = 0
+}
+function upgradeMusic(){
+    document.getElementById('musicsupgrade').play()
+    setTimeout(upgrdMusicPause,1800)
+}
+function upgrdMusicPause(){
+    audio = document.getElementById('musicsupgrade')
+    audio.pause()
+    audio.currentTime = 0
+}
+function soliderUpSoundPause(){
+    audio = document.getElementById('musicssoldupgrade')
+    audio.pause()
+    audio.currentTime = 0
+}
+function soliderUpSound(){
+    document.getElementById('musicssoldupgrade').play()
+    setTimeout(soliderUpSoundPause,400)
+}
+
+//----------------------------------------------------------------------------------------------------------------------------------------------------//

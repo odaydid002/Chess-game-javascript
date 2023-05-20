@@ -10,6 +10,33 @@
     <title>Chess</title>
 </head>
 <body>
+    <div id="dragable">
+        <button class="musicControl" id="musicControl" onclick="pauseResume()">
+            <i class="fa-solid fa-volume-high"></i>
+    </button>
+    </div>
+    
+    <audio autoplay loop id="musics">
+        <source src="assets/background.mp3" type="audio/mpeg">
+    </audio>
+    <audio autoplay loop id="musicsmate">
+        <source src="assets/checkmate.mp3" type="audio/mpeg">
+    </audio>
+    <audio autoplay loop id="musicsdrag">
+        <source src="assets/castling.mp3" type="audio/mpeg">
+    </audio>
+    <audio autoplay loop id="musicsdrag0">
+        <source src="assets/dragg.mp3" type="audio/mpeg">
+    </audio>
+    <audio autoplay loop id="musicselect">
+        <source src="assets/selector.mp3" type="audio/mpeg">
+    </audio>
+    <audio autoplay loop id="musicsupgrade">
+        <source src="assets/check.mp3" type="audio/mpeg">
+    </audio>
+    <audio autoplay loop id="musicssoldupgrade">
+        <source src="assets/solderup.mp3" type="audio/mpeg">
+    </audio>
     <div class="winner" id="winner">
         <div class="flex">
             <i class="fa-solid fa-trophy" style="color: #f9de2f;">
@@ -24,7 +51,7 @@
             <p class="stats">Pieces Eated: <span id="eatedp1">99</span></p>
             <p class="stats">Pieces Left: <span id="leftp1">99</span></p>
             <p class="stats">Moves: <span id="movesp1">99</span></p>
-            <p class="stats">King Checks: <span id="checksp1">99</span></p>
+            <p class="stats">King Check: <span id="checksp1">99</span></p>
        </div>
        <div class="p2">
             <h1 class="pTitle">Player 2</h1>
@@ -33,7 +60,7 @@
             <p class="stats">Pieces Eated: <span id="eatedp2">99</span></p>
             <p class="stats">Pieces Left: <span id="leftp2">99</span></p>
             <p class="stats">Moves: <span id="movesp2">99</span></p>
-            <p class="stats">King Checks: <span id="checksp2">99</span></p>
+            <p class="stats">King Check: <span id="checksp2">99</span></p>
         </div>
         </div>
         <button class="upgrade" id="restart" onclick="restartGame()">Restart <i style="font-size: 1em;padding: 0;" class="fa-sharp fa-solid fa-rotate-right"></i></button>
@@ -61,7 +88,7 @@
                 <div class="board-row">
                     <p class="arg">8</p>
                     <div class="board-col">
-                        <div class="board-squire bw" id="a8"><img src="assets/castle-b.png" id="castle1b" class="piece black" alt="castle"></div>
+                        <div class="board-squire bw" id="a8"><img src="Assets/castle-b.png" id="castle1b" class="piece black" alt="castle"></div>
                     </div>
                     <div class="board-col">
                         <div class="board-squire bs" id="b8"><img src="Assets/horse-b.png" id="horse1b" class="piece black" alt="horse"></div>
@@ -82,7 +109,7 @@
                         <div class="board-squire bw" id="g8"><img src="Assets/horse-b.png" id="horse2b" class="piece black" alt="horse"></div>
                     </div>
                     <div class="board-col">
-                        <div class="board-squire bs" id="h8"><img src="assets/castle-b.png" id="castle2b" class="piece black" alt="castle"></div>
+                        <div class="board-squire bs" id="h8"><img src="Assets/castle-b.png" id="castle2b" class="piece black" alt="castle"></div>
                     </div>
                 </div>
                 <!--------------------------------------------------------------------->
@@ -257,7 +284,7 @@
                 <div class="board-row">
                     <p class="arg">1</p>
                     <div class="board-col">
-                        <div class="board-squire bs" id="a1"><img src="assets/castle-w.png" id="castle1w" class="piece white" alt="castle"></div>
+                        <div class="board-squire bs" id="a1"><img src="Assets/castle-w.png" id="castle1w" class="piece white" alt="castle"></div>
                     </div>
                     <div class="board-col">
                         <div class="board-squire bw" id="b1"><img src="Assets/horse-w.png" id="horse1w" class="piece white" alt="horse"></div>
@@ -278,7 +305,7 @@
                         <div class="board-squire bs" id="g1"><img src="Assets/horse-w.png" id="horse2w" class="piece white" alt="horse"></div>
                     </div>
                     <div class="board-col">
-                        <div class="board-squire bw" id="h1"><img src="assets/castle-w.png" id="castle2w" class="piece white" alt="castle"></div>
+                        <div class="board-squire bw" id="h1"><img src="Assets/castle-w.png" id="castle2w" class="piece white" alt="castle"></div>
                     </div>
                 </div>
                 <div class="board-row margg">

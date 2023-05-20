@@ -59,12 +59,13 @@ body{
     margin-top: 40px;
     transform: rotate(var(--Degriss));    
     text-align: center;
+    transition: 0.6s ease;
 }
 
 .piece{
     width: var(--sqw);
     height: var(--sqw);
-    transition: 0.9s;
+    transition: 0.7s;
     transform: rotate(var(--Degris));
 }
 
@@ -309,3 +310,33 @@ body{
     font-size: 0.9em;
     font-weight: 100;
 }
+
+#dragable {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 2.5dvw;
+    height: 5dvh;
+    background-color: #e6e6e634;
+    position: absolute;
+    left: 10dvw;
+    top: 6dvh;
+    cursor: move;
+    z-index: 999;
+    border-radius: 15px;
+}
+
+.musicControl{
+    border: none;
+    background-color: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+#dragable i{
+    font-size: 0.9em;
+}
+
+  
